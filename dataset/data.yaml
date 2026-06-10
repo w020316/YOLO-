@@ -1,0 +1,6 @@
+path: D:\xm\工商作业\大模型\YOLO目标检测\yolov8_project\dataset
+train: images/train
+val: images/val
+
+nc: 2
+names: ['hat', 'nohat']

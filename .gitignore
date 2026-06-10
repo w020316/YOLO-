@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ultralytics
+ultralytics_config/
+runs/
+
+# Dataset (too large for git)
+dataset/images/
+dataset/labels/
+dataset/*.cache
+
+# Model weights (large files)
+*.pt
+!yolov8n.pt
+
+# Uploads and results
+static/uploads/
+static/results/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Environment
+.env

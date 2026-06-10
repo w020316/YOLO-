@@ -1,0 +1,112 @@
+[
+  {
+    "id": "20260610210358424284",
+    "timestamp": "2026-06-10 21:03:58",
+    "filename": "20260610_210357_D01_20230914072942149.jpg",
+    "image_path": "/static/uploads/20260610_210357_D01_20230914072942149.jpg",
+    "result_path": "/static/results/20260610_210357_D01_20230914072942149.jpg",
+    "hat_count": 8,
+    "nohat_count": 0,
+    "total_count": 8,
+    "has_alert": false,
+    "detection_type": "image",
+    "detections": [
+      {
+        "class": "hat",
+        "class_cn": "佩戴帽子",
+        "confidence": 0.5143,
+        "bbox": [
+          441,
+          93,
+          542,
+          169
+        ],
+        "alert": null
+      },
+      {
+        "class": "hat",
+        "class_cn": "佩戴帽子",
+        "confidence": 0.4328,
+        "bbox": [
+          1150,
+          10,
+          1260,
+          99
+        ],
+        "alert": null
+      },
+      {
+        "class": "hat",
+        "class_cn": "佩戴帽子",
+        "confidence": 0.4217,
+        "bbox": [
+          1092,
+          132,
+          1212,
+          236
+        ],
+        "alert": null
+      },
+      {
+        "class": "hat",
+        "class_cn": "佩戴帽子",
+        "confidence": 0.4165,
+        "bbox": [
+          294,
+          302,
+          393,
+          383
+        ],
+        "alert": null
+      },
+      {
+        "class": "hat",
+        "class_cn": "佩戴帽子",
+        "confidence": 0.348,
+        "bbox": [
+          1083,
+          124,
+          1234,
+          251
+        ],
+        "alert": null
+      },
+      {
+        "class": "hat",
+        "class_cn": "佩戴帽子",
+        "confidence": 0.3108,
+        "bbox": [
+          441,
+          96,
+          550,
+          190
+        ],
+        "alert": null
+      },
+      {
+        "class": "hat",
+        "class_cn": "佩戴帽子",
+        "confidence": 0.3053,
+        "bbox": [
+          453,
+          96,
+          535,
+          159
+        ],
+        "alert": null
+      },
+      {
+        "class": "hat",
+        "class_cn": "佩戴帽子",
+        "confidence": 0.2755,
+        "bbox": [
+          1138,
+          5,
+          1295,
+          120
+        ],
+        "alert": null
+      }
+    ]
+  }
+]

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食品加工人员异常行为检测系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="8" fill="url(#logoGrad)"/>
+                    <path d="M8 16L14 22L24 10" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#00D4AA"/><stop offset="1" stop-color="#00A3FF"/></linearGradient></defs>
+                </svg>
+            </div>
+            <span class="logo-text">SafeGuard</span>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" data-page="dashboard">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <span>数据仪表盘</span>
+            </li>
+            <li class="nav-item" data-page="detect">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <span>图片检测</span>
+            </li>
+            <li class="nav-item" data-page="camera">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                <span>摄像头检测</span>
+            </li>
+            <li class="nav-item" data-page="video">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                <span>视频检测</span>
+            </li>
+            <li class="nav-item" data-page="batch">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                <span>批量检测</span>
+            </li>
+            <li class="nav-item" data-page="history">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>检测历史</span>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="system-status" id="systemStatus">
+                <div class="status-dot"></div>
+                <span>系统检测中...</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="page-title">
+                <h1 id="pageTitle">数据仪表盘</h1>
+                <p id="pageDesc" class="page-desc">系统运行概览与模型训练指标</p>
+            </div>
+            <div class="top-stats">
+                <div class="top-stat">
+                    <span class="top-stat-value" id="topHatCount">0</span>
+                    <span class="top-stat-label">正常</span>
+                </div>
+                <div class="top-stat alert">
+                    <span class="top-stat-value" id="topNohatCount">0</span>
+                    <span class="top-stat-label">异常</span>
+                </div>
+                <div class="top-stat">
+                    <span class="top-stat-value" id="topTotalCount">0</span>
+                    <span class="top-stat-label">总计</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 仪表盘页面 -->
+        <div class="page active" id="page-dashboard">
+            <div class="dashboard-grid">
+                <div class="dash-card span-2">
+                    <div class="dash-card-header"><h3>系统概览</h3></div>
+                    <div class="overview-cards">
+                        <div class="overview-item"><div class="ov-icon green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><div class="ov-value" id="dashTotalDet">0</div><div class="ov-label">总检测次数</div></div>
+                        <div class="overview-item"><div class="ov-icon green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/></svg></div><div class="ov-value" id="dashTotalHat">0</div><div class="ov-label">正常检测</div></div>
+                        <div class="overview-item"><div class="ov-icon red"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="ov-value" id="dashTotalNohat">0</div><div class="ov-label">异常检测</div></div>
+                        <div class="overview-item"><div class="ov-icon yellow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="ov-value" id="dashAlertRate">0%</div><div class="ov-label">异常率</div></div>
+                    </div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-header"><h3>模型信息</h3></div>
+                    <div class="model-info-list" id="modelInfoList">
+                        <div class="mi-item"><span class="mi-label">模型状态</span><span class="mi-value" id="miStatus">加载中...</span></div>
+                        <div class="mi-item"><span class="mi-label">运行设备</span><span class="mi-value" id="miDevice">-</span></div>
+                        <div class="mi-item"><span class="mi-label">模型大小</span><span class="mi-value" id="miSize">-</span></div>
+                        <div class="mi-item"><span class="mi-label">训练集</span><span class="mi-value" id="miTrain">-</span></div>
+                        <div class="mi-item"><span class="mi-label">验证集</span><span class="mi-value" id="miVal">-</span></div>
+                    </div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-header"><h3>训练指标</h3></div>
+                    <div class="metrics-list" id="metricsList">
+                        <div class="mi-item"><span class="mi-label">mAP50</span><span class="mi-value accent" id="miMap50">-</span></div>
+                        <div class="mi-item"><span class="mi-label">mAP50-95</span><span class="mi-value accent" id="miMap95">-</span></div>
+                        <div class="mi-item"><span class="mi-label">Precision</span><span class="mi-value" id="miPrec">-</span></div>
+                        <div class="mi-item"><span class="mi-label">Recall</span><span class="mi-value" id="miRecall">-</span></div>
+                        <div class="mi-item"><span class="mi-label">训练轮数</span><span class="mi-value" id="miEpochs">-</span></div>
+                    </div>
+                </div>
+                <div class="dash-card span-2">
+                    <div class="dash-card-header"><h3>训练过程</h3></div>
+                    <div class="training-plots">
+                        <div class="plot-item"><img id="plotResults" src="" alt="训练结果"><span>训练结果曲线</span></div>
+                        <div class="plot-item"><img id="plotPR" src="" alt="PR曲线"><span>PR曲线</span></div>
+                        <div class="plot-item"><img id="plotF1" src="" alt="F1曲线"><span>F1曲线</span></div>
+                        <div class="plot-item"><img id="plotPred" src="" alt="预测示例"><span>预测示例</span></div>
+                    </div>
+                </div>
+                <div class="dash-card span-2">
+                    <div class="dash-card-header"><h3>检测类型分布</h3></div>
+                    <div class="type-distribution" id="typeDistribution"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图片检测页面 -->
+        <div class="page" id="page-detect">
+            <div class="detect-layout">
+                <div class="detect-left">
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="upload-content">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <p class="upload-title">拖拽图片到此处或点击上传</p>
+                            <p class="upload-hint">支持 JPG / PNG / BMP 格式，最大 100MB</p>
+                        </div>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                    </div>
+                    <div class="preview-container" id="previewContainer" style="display:none;">
+                        <img id="previewImage" src="" alt="预览">
+                        <div class="preview-actions">
+                            <button class="btn btn-outline" id="clearPreviewBtn">清除</button>
+                            <button class="btn btn-primary" id="detectBtn">开始检测</button>
+                        </div>
+                    </div>
+                    <div class="conf-control">
+                        <label>置信度阈值: <span id="confValue">0.25</span></label>
+                        <input type="range" id="confSlider" min="0.1" max="0.9" step="0.05" value="0.25">
+                    </div>
+                </div>
+                <div class="detect-right">
+                    <div class="result-panel" id="resultPanel">
+                        <div class="result-empty">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                            <p>上传图片并点击检测查看结果</p>
+                        </div>
+                        <div class="result-content" id="resultContent" style="display:none;">
+                            <div class="result-toolbar">
+                                <span class="inference-time" id="inferenceTime"></span>
+                                <button class="btn btn-outline btn-sm" id="downloadResultBtn">下载结果</button>
+                            </div>
+                            <div class="result-image-container">
+                                <img id="resultImage" src="" alt="检测结果">
+                            </div>
+                            <div class="detection-list" id="detectionList"></div>
+                        </div>
+                    </div>
+                    <div class="alert-banner" id="alertBanner" style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <span id="alertText">检测到未佩戴帽子的工作人员！</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 摄像头检测页面 -->
+        <div class="page" id="page-camera">
+            <div class="camera-layout">
+                <div class="camera-view">
+                    <video id="cameraVideo" autoplay playsinline></video>
+                    <canvas id="cameraCanvas" style="display:none;"></canvas>
+                    <div class="camera-overlay" id="cameraOverlay">
+                        <button class="btn btn-primary btn-lg" id="openCameraBtn">打开摄像头</button>
+                    </div>
+                    <div class="camera-live-badge" id="cameraLiveBadge" style="display:none;">LIVE</div>
+                </div>
+                <div class="camera-controls">
+                    <button class="btn btn-primary" id="captureBtn" disabled>拍照检测</button>
+                    <button class="btn btn-danger" id="autoDetectBtn" disabled>自动检测</button>
+                    <button class="btn btn-outline" id="closeCameraBtn" disabled>关闭摄像头</button>
+                </div>
+                <div class="camera-conf">
+                    <label>置信度: <span id="cameraConfValue">0.25</span></label>
+                    <input type="range" id="cameraConfSlider" min="0.1" max="0.9" step="0.05" value="0.25">
+                    <label>自动检测间隔: <span id="autoIntervalValue">2</span>秒</label>
+                    <input type="range" id="autoIntervalSlider" min="1" max="10" step="1" value="2">
+                </div>
+                <div class="camera-result" id="cameraResult" style="display:none;">
+                    <div class="result-toolbar">
+                        <span class="inference-time" id="cameraInferenceTime"></span>
+                        <button class="btn btn-outline btn-sm" id="downloadCameraBtn">下载结果</button>
+                    </div>
+                    <div class="result-image-container">
+                        <img id="cameraResultImage" src="" alt="检测结果">
+                    </div>
+                    <div class="detection-list" id="cameraDetectionList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 视频检测页面 -->
+        <div class="page" id="page-video">
+            <div class="video-layout">
+                <div class="video-upload-zone" id="videoUploadZone">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    <p class="upload-title">拖拽视频文件到此处或点击上传</p>
+                    <p class="upload-hint">支持 MP4 / AVI / MOV 格式</p>
+                    <input type="file" id="videoInput" accept="video/*" hidden>
+                </div>
+                <div class="video-progress" id="videoProgress" style="display:none;">
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <p id="videoProgressText">正在处理视频...</p>
+                </div>
+                <div class="video-result" id="videoResult" style="display:none;">
+                    <div class="video-stats">
+                        <div class="stat-card"><span class="stat-value" id="videoFrames">0</span><span class="stat-label">总帧数</span></div>
+                        <div class="stat-card"><span class="stat-value" id="videoHatCount">0</span><span class="stat-label">正常检测</span></div>
+                        <div class="stat-card alert"><span class="stat-value" id="videoNohatCount">0</span><span class="stat-label">异常检测</span></div>
+                        <div class="stat-card"><span class="stat-value" id="videoTime">0s</span><span class="stat-label">处理耗时</span></div>
+                    </div>
+                    <div class="video-player">
+                        <video id="resultVideo" controls></video>
+                    </div>
+                    <div class="video-samples" id="videoSamples"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 批量检测页面 -->
+        <div class="page" id="page-batch">
+            <div class="batch-layout">
+                <div class="batch-upload-zone" id="batchUploadZone">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                    <p class="upload-title">拖拽多张图片到此处或点击上传</p>
+                    <p class="upload-hint">支持同时上传多张图片进行批量检测</p>
+                    <input type="file" id="batchInput" accept="image/*" multiple hidden>
+                </div>
+                <div class="batch-conf">
+                    <label>置信度阈值: <span id="batchConfValue">0.25</span></label>
+                    <input type="range" id="batchConfSlider" min="0.1" max="0.9" step="0.05" value="0.25">
+                </div>
+                <div class="batch-progress" id="batchProgress" style="display:none;">
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <p id="batchProgressText">正在批量处理...</p>
+                </div>
+                <div class="batch-results" id="batchResults"></div>
+                <div class="batch-summary" id="batchSummary" style="display:none;">
+                    <div class="stat-card"><span class="stat-value" id="batchTotal">0</span><span class="stat-label">总图片</span></div>
+                    <div class="stat-card"><span class="stat-value" id="batchHatTotal">0</span><span class="stat-label">正常总数</span></div>
+                    <div class="stat-card alert"><span class="stat-value" id="batchNohatTotal">0</span><span class="stat-label">异常总数</span></div>
+                    <div class="stat-card"><span class="stat-value" id="batchTotalTime">0ms</span><span class="stat-label">总耗时</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 检测历史页面 -->
+        <div class="page" id="page-history">
+            <div class="history-layout">
+                <div class="history-header">
+                    <h3>检测历史记录</h3>
+                    <div class="history-actions">
+                        <select id="historyFilter" class="select-sm">
+                            <option value="">全部类型</option>
+                            <option value="image">图片检测</option>
+                            <option value="camera">摄像头</option>
+                            <option value="batch">批量检测</option>
+                        </select>
+                        <select id="historyAlertFilter" class="select-sm">
+                            <option value="">全部状态</option>
+                            <option value="true">仅异常</option>
+                            <option value="false">仅正常</option>
+                        </select>
+                        <button class="btn btn-outline btn-sm" id="exportReportBtn">导出报告</button>
+                        <button class="btn btn-outline btn-sm" id="clearHistoryBtn">清空历史</button>
+                    </div>
+                </div>
+                <div class="history-list" id="historyList">
+                    <div class="history-empty">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <p>暂无检测记录</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast通知 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- 详情弹窗 -->
+    <div class="modal-overlay" id="modalOverlay" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">检测详情</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- 加载遮罩 -->
+    <div class="loading-overlay" id="loadingOverlay" style="display:none;">
+        <div class="loading-spinner">
+            <div class="spinner-ring"></div>
+            <p id="loadingText">正在处理...</p>
+        </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
