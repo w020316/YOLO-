@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory, send_file
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
 import os
 import cv2
@@ -15,6 +16,7 @@ from ultralytics import YOLO
 import torch
 
 app = Flask(__name__)
+CORS(app)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024
 app.config['RESULT_FOLDER'] = 'static/results'
